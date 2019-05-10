@@ -13,7 +13,14 @@ new Vue({
 		loading: false,
 		results: []
 	},
-
+	watch: {
+		cart: {
+			handler: function() {
+				console.log('cart changed');
+			},
+			deep: true
+		}
+	},
 	methods: {
 		addToCart: function(product) {
 			this.total += product.price;
