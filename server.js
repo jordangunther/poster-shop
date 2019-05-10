@@ -3,6 +3,16 @@ var app = express();
 var path = require("path");
 var server = require("http").createServer(app);
 var fs = require("fs");
+var Pusher = require('pusher');
+
+require('dotenv').config();
+
+var pusher = new Pusher({
+	appId: process.env.PUSHER_APP_ID,
+	key: process.env.PUSHER_KEY,
+	secret: process.env.PUSHER_SECRET,
+	cluster: process.env.PUSHER_CLUSTER,
+});
 
 var bodyParser = require("body-parser");
 app.use(bodyParser.json());
@@ -19,6 +29,8 @@ fs.readFile("./directory.json", "utf8", function(err, data) {
 	}
 });
 
+
+
 app.get("/search", function(req, res) {
 	var results = directory.reduce(function(acc, file) {
 		if (file.tags.indexOf(req.query.q) !== -1) {
@@ -32,6 +44,10 @@ app.get("/search", function(req, res) {
 		return acc;
 	}, []);
 	res.send(results);
+});
+
+app.post('/cart_update', function(req, res) {
+	console.log(req.body);
 });
 
 app.use("/node_modules", express.static(path.join(__dirname, "node_modules")));

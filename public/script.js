@@ -15,8 +15,8 @@ new Vue({
 	},
 	watch: {
 		cart: {
-			handler: function() {
-				console.log('cart changed');
+			handler: function(val) {
+				this.$http.post('/cart_update', val);
 			},
 			deep: true
 		}
